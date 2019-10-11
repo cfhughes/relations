@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shoes</title>
+    <style>
+        table {
+            width: 50%
+            
+        }
+    </style>
+</head>
+<body>
+    <form action="/add_shoe" method="POST">
+        {% csrf_token %}
+        <p>Color:<input type="text" name="color"/></p>
+        <p>Brand:<input type="text" name="brand"/></p>
+        <p>Owner:<select multiple name="person_id" id="person_id">
+            {% for person in people %}
+            <option value="{{person.id}}">{{person.name}} {{person.id}}</option>
+            {% endfor %}
+        </select></p>
+        <input type="submit" value="Add Shoe">
+    </form>
+    <p></p>
+    <form action="/add_person" method="POST">
+        {% csrf_token %}
+        <input name="name" type="text">
+        <input type="submit" value="Add Person">
+    </form>
+    <table>
+        <tr>
+            <th>
+                Color
+            </th>
+            <th>
+                Brand
+            </th>
+            <th>
+                Owner Name
+            </th>
+        </tr>
+        {% for shoe in shoes %}
+        <tr>
+            <td>
+                {{shoe.color}}
+            </td>
+            <td>
+                {{shoe.brand}}
+            </td>
+            <td>
+                {% for owner in shoe.owners.all %}
+                    {{owner.name}} ,
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
